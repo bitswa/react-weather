@@ -12,6 +12,7 @@ import sunrise from "./assets/sunrise.svg";
 import sunset from "./assets/sunset.svg";
 
 import { ImageStatus } from "./components/ImageStatus";
+import { InfoCard } from "./components/InfoCard";
 
 function App() {
   const [handleButton, setHandleButton] = useState(false);
@@ -44,6 +45,7 @@ function App() {
             <ImageStatus
               className="w-40 mx-auto"
               weather={data?.current?.weather[0]?.main}
+              datetime={datetime}
             />
             <div className="my-8 flex flex-col gap-3">
               <span className="font-medium text-4xl flex">
@@ -108,7 +110,11 @@ function App() {
                 <span className="font-medium text-lg">
                   {item.dt_txt.split(" ")[1].slice(0, -3)}
                 </span>
-                <ImageStatus className="w-16" weather={item?.weather[0].main} />
+                <ImageStatus
+                  className="w-16"
+                  weather={item?.weather[0].main}
+                  datetime={new Date(item.dt * 1000)}
+                />
                 <div className="flex gap-2 font-medium text-sm">
                   {Math.round(item?.main?.temp_max)}°
                   <span className="opacity-50">
@@ -123,43 +129,30 @@ function App() {
         <section className="lg:flex lg:gap-8 w-full">
           <div className="w-full">
             <ul className="flex gap-8 my-8">
-              <li className="flex flex-col justify-between w-[50%] h-32 bg-white px-4 py-3 rounded-3xl">
-                <span className="font-medium text-sm opacity-40">Wind</span>
-                <span className="font-medium text-3xl">
-                  {data?.current?.wind?.speed}
-                  <span className="font-normal text-sm">km/h</span>
-                </span>
-                <span className="text-sm">
-                  Gust - {data?.current?.wind?.gust}
-                </span>
-              </li>
-              <li className="flex flex-col justify-between w-[50%] h-32 bg-white px-4 py-3 rounded-3xl">
-                <span className="font-medium text-sm opacity-40">
-                  Visibility
-                </span>
-                <span className="font-medium text-3xl">
-                  {(data?.current?.visibility as number) / 1000}
-                  <span className="font-normal text-sm">km/h</span>
-                </span>
-                <span className="text-sm">Average</span>
-              </li>
+              <InfoCard
+                top="Wind"
+                center={data?.current?.wind?.speed}
+                rightcenter="km/h"
+                bottom="Average"
+              />
+
+              <InfoCard
+                top="Visibility"
+                center={(data?.current?.visibility as number) / 1000}
+                rightcenter="km"
+                bottom="Normal"
+              />
             </ul>
 
             <ul className="flex gap-8 my-8">
-              <li className="flex flex-col justify-between w-[50%] h-32 bg-white px-4 py-3 rounded-3xl">
-                <span className="font-medium text-sm opacity-40">Humidity</span>
-                <span className="font-medium text-3xl">
-                  {data?.current?.main?.humidity}
-                  <span className="font-normal text-sm">%</span>
-                </span>
-                <span className="text-sm">Normal</span>
-              </li>
+              <InfoCard
+                top="Humidity"
+                center={data?.current?.main?.humidity}
+                rightcenter="%"
+                bottom="Normal"
+              />
 
-              <li className="flex flex-col justify-between w-[50%] h-32 bg-white px-4 py-3 rounded-3xl">
-                <span className="font-medium text-sm opacity-40">
-                  Temp Status
-                </span>
-
+              <InfoCard top="Temp Status">
                 <span className="font-medium text-lg">
                   {Math.round(data?.current?.main?.temp_max as number)}°
                 </span>
@@ -167,7 +160,7 @@ function App() {
                 <span className="font-medium text-lg opacity-40">
                   {Math.round(data?.current?.main?.temp_min as number)}°
                 </span>
-              </li>
+              </InfoCard>
             </ul>
           </div>
 

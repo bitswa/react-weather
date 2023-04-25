@@ -75,7 +75,7 @@ export async function fetchData({ lat, lon }: Props) {
     }&units=metric`
   );
   const { data: air }: airProps = await axios.get(
-    `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${
+    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${
       import.meta.env.VITE_API_KEY
     }`
   );
