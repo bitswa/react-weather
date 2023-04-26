@@ -2,14 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  font-family: 'Montserrat', sans-serif;
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+.spinner {
+  height: 120px;
+  width: 120px;
+  border: 6px solid;
+  border-color: white transparent;
+  border-radius: 50%;
+  animation: spin 1.5s ease infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (min-width: 1024px) {
   body {
-    display:grid;
-    place-items:center;
+    display: grid;
+    place-items: center;
     min-height: 100vh;
     background-color: rgba(219, 211, 211, 0.952);
   }

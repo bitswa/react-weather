@@ -1,28 +1,30 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getWeekDay } from "./utils/getWeekDay";
 import { fetchData } from "./utils/fetchData";
-
-import search from "./assets/search.svg";
-import arrow from "./assets/arrow.svg";
-import drop from "./assets/drop.svg";
-import cloud from "./assets/cloud.svg";
 
 import sunrise from "./assets/sunrise.svg";
 import sunset from "./assets/sunset.svg";
 
 import { ImageStatus } from "./components/ImageStatus";
 import { InfoCard } from "./components/InfoCard";
+import { Header } from "./components/Header";
+import { Loading } from "./components/Loading";
+import { useState } from "react";
 
 function App() {
-  const [handleButton, setHandleButton] = useState(false);
-  const { data } = useQuery(["weather"], () =>
-    fetchData({ lat: "-22.5269448", lon: "-41.944972" })
+  const [location, setLocation] = useState({
+    lat: "-22.5269448",
+    lon: "-41.944972",
+  });
+  const { data, isLoading, refetch } = useQuery(["weather"], () =>
+    fetchData({ lat: location.lat, lon: location.lon })
   );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   console.log(data);
 
-  const datetime = new Date((data?.current?.dt as number) * 1000);
   const sunriseDatetime = new Date(
     (data?.current?.sys.sunrise as number) * 1000
   );
@@ -30,71 +32,7 @@ function App() {
 
   return (
     <div className="md:flex lg:max-h-[580px] lg:max-w-5xl lg:rounded-3xl overflow-hidden">
-      <div className="p-8 bg-white md:min-w-[310px]">
-        <header className="mb-8">
-          <button onClick={() => setHandleButton((prev) => !prev)} className="">
-            {handleButton ? (
-              <img className="w-8 h-8 lg:w-6 lg:h-6" src={arrow} alt="" />
-            ) : (
-              <img className="w-8 h-8 lg:w-6 lg:h-6" src={search} alt="" />
-            )}
-          </button>
-        </header>
-        <div>
-          <div>
-            <ImageStatus
-              className="w-40 mx-auto"
-              weather={data?.current?.weather[0]?.main}
-              datetime={datetime}
-            />
-            <div className="my-8 flex flex-col gap-3">
-              <span className="font-medium text-4xl flex">
-                {Math.round(data?.current?.main?.temp as number)}
-                <span className="text-xl">°C</span>
-              </span>
-              <p className="text-lg font-medium">
-                {getWeekDay(datetime.getDay())},{" "}
-                <span className="font-normal opacity-50">
-                  {" "}
-                  {datetime.getHours() < 10 && "0"}
-                  {datetime.getHours()}
-                  {":"}
-                  {datetime.getMinutes() < 10 && "0"}
-                  {datetime.getMinutes()}
-                </span>
-              </p>
-            </div>
-          </div>
-          <div className="py-8 border-t-2 ">
-            <ul className="flex flex-col gap-3">
-              <li>
-                <span className="flex items-center gap-2">
-                  <img src={cloud} alt="cloud" />
-                  <span className="font-medium text-lg md:text-base">
-                    {data?.current?.weather[0]?.description}
-                  </span>
-                </span>
-              </li>
-              <li>
-                <span className="flex items-center gap-2">
-                  <img src={drop} alt="water drop" />
-                  {data?.forecast?.list[0].pop && (
-                    <span className="font-medium text-lg md:text-base">
-                      Rain -{" "}
-                      {data?.forecast.list[0].pop > 0.9
-                        ? data?.forecast?.list[0].pop * 100
-                        : (data?.forecast?.list[0].pop * 10)
-                            .toString()
-                            .slice(0, 3)}
-                      %
-                    </span>
-                  )}
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Header setLocation={setLocation} refetchWeather={refetch} data={data} />
       <main className="bg-[#f2f2f2] p-8 w-full lg:max-w-[700px]">
         <span className="border-b-2 border-black font-semibold text-xl">
           Today
