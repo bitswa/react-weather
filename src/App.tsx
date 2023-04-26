@@ -8,7 +8,7 @@ import { ImageStatus } from "./components/ImageStatus";
 import { InfoCard } from "./components/InfoCard";
 import { Header } from "./components/Header";
 import { Loading } from "./components/Loading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [location, setLocation] = useState({
@@ -19,10 +19,13 @@ function App() {
     fetchData({ lat: location.lat, lon: location.lon })
   );
 
+  useEffect(() => {
+    refetch();
+  }, [location, refetch]);
+
   if (isLoading) {
     return <Loading />;
   }
-
   console.log(data);
 
   const sunriseDatetime = new Date(
@@ -32,8 +35,8 @@ function App() {
 
   return (
     <div className="md:flex lg:max-h-[580px] lg:max-w-5xl lg:rounded-3xl overflow-hidden">
-      <Header setLocation={setLocation} refetchWeather={refetch} data={data} />
-      <main className="bg-[#f2f2f2] p-8 w-full lg:max-w-[700px]">
+      <Header setLocation={setLocation} data={data} />
+      <main className="bg-[#f2f2f2] p-5 px-8 w-full lg:max-w-[700px]">
         <span className="border-b-2 border-black font-semibold text-xl">
           Today
         </span>

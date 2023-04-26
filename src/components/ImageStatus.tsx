@@ -11,12 +11,12 @@ import clear from "../assets/clear.svg";
 type Props = {
   className: string;
   weather: string | undefined;
-  datetime?: Date;
+  datetime: Date;
 };
 
 export const ImageStatus = ({ className, weather, datetime }: Props) => {
   const hours = datetime?.getHours();
-  
+
   // night
   if (hours != undefined) {
     if (hours >= 18 || hours <= 5) {
