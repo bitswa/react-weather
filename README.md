@@ -8,7 +8,7 @@ Este é um projeto de clima que utiliza React com TypeScript e o bundler Vite. E
 
 ![Preview](https://github.com/bitswa/react-weather/blob/master/design.png)
 
-Design criado do zero, utilizando o figma.
+Design criado do zero, utilizando o [figma](https://www.figma.com/file/XkVyrNfiwyb7pWvBTA3RZe/Weather-App?type=design&node-id=0%3A1&t=rYop3IR9fRHk6JAL-1).
 O resultado não ficou idêntico por contas de erros no desenvolvimento, mas irei atualizar com melhoras.
 
 ## Tecnologias Utilizadas
